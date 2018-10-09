@@ -1,11 +1,11 @@
 MBGL_ROOT = /home/simon.eves/src/mapbox-gl-native
 
 # necessary include dirs for public header tree
-INC_DIRS += -I${MBGL_ROOT}/include
-INC_DIRS += -I${MBGL_ROOT}/platform/default
-INC_DIRS += -I${MBGL_ROOT}/mason_packages/headers/geometry/0.9.3/include
-INC_DIRS += -I${MBGL_ROOT}/mason_packages/headers/variant/1.1.4/include
-INC_DIRS += -I${MBGL_ROOT}/vendor/expected/include
+INC_DIRS += -I${MBGL_ROOT}/include # regular MBGL includes
+INC_DIRS += -I${MBGL_ROOT}/platform/default # for default_styles.hpp only (header only, no deps, could be moved into ^)
+INC_DIRS += -I${MBGL_ROOT}/mason_packages/headers/geometry/0.9.3/include # template headers only
+INC_DIRS += -I${MBGL_ROOT}/mason_packages/headers/variant/1.1.4/include # template headers only
+INC_DIRS += -I${MBGL_ROOT}/vendor/expected/include # template headers only
 
 # necessary lib dirs
 # need PNG and JPEG to be the same as Core

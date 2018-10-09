@@ -1,0 +1,5 @@
+ccache --clear
+BUILDTYPE=Debug WITH_EGL=On make render
+BUILDTYPE=Debug WITH_EGL=On make glfw-app
+BUILDTYPE=Release WITH_EGL=On make render
+BUILDTYPE=Release WITH_EGL=On make glfw-app

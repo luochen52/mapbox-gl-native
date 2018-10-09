@@ -2,16 +2,17 @@ MBGL_ROOT = /home/simon.eves/src/mapbox-gl-native
 
 INC_DIRS += -I${MBGL_ROOT}/include
 INC_DIRS += -I${MBGL_ROOT}/platform/default
-#INC_DIRS += -I${MBGL_ROOT}/mason_packages/headers/boost/1.65.1/include
-#INC_DIRS += -I${MBGL_ROOT}/mason_packages/headers/geojson/0.4.2/include
-INC_DIRS += -I${MBGL_ROOT}/mason_packages/headers/args/6.2.0/include
 INC_DIRS += -I${MBGL_ROOT}/mason_packages/headers/geometry/0.9.3/include
 INC_DIRS += -I${MBGL_ROOT}/mason_packages/headers/variant/1.1.4/include
+#INC_DIRS += -I${MBGL_ROOT}/mason_packages/headers/libpng/1.6.25/include/libpng16
+INC_DIRS += -I${MBGL_ROOT}/vendor/expected/include
+
+#INC_DIRS += -I${MBGL_ROOT}/mason_packages/headers/args/6.2.0/include
+#INC_DIRS += -I${MBGL_ROOT}/mason_packages/headers/boost/1.65.1/include
+#INC_DIRS += -I${MBGL_ROOT}/mason_packages/headers/geojson/0.4.2/include
 #INC_DIRS += -I${MBGL_ROOT}/mason_packages/headers/swiftshader/2018-05-31/include
-INC_DIRS += -I${MBGL_ROOT}/mason_packages/headers/libpng/1.6.25/include/libpng16
 #INC_DIRS += -I${MBGL_ROOT}/mason_packages/headers/libjpeg-turbo/1.5.0/include
 #INC_DIRS += -I${MBGL_ROOT}/mason_packages/headers/libuv/1.9.1/include
-INC_DIRS += -I${MBGL_ROOT}/vendor/expected/include
 #INC_DIRS += -I${MBGL_ROOT}/vendor/sqlite/include
 
 LIB_DIRS += -L${MBGL_ROOT}/build/linux-x86_64/Debug
@@ -22,8 +23,8 @@ LIB_DIRS += -L${MBGL_ROOT}/mason_packages/linux-x86_64/libuv/1.9.1/lib
 # build
 LIBS += -lmbgl-filesource
 LIBS += -lmbgl-loop-uv
-LIBS += -lsqlite
 LIBS += -lmbgl-core
+LIBS += -lsqlite
 LIBS += -lnunicode
 LIBS += -licu
 
@@ -44,8 +45,8 @@ LIBS += -luv
 
 OPTS += -g
 OPTS += -fPIE
-OPTS += -std=c++14
 
+#OPTS += -std=c++14
 #OPTS += -static-libstdc++
 #OPTS += -ftemplate-depth=1024 # this app doesn't seem to need it
 #OPTS += -Wall

@@ -11,7 +11,7 @@ INC_DIRS += -I${MBGL_ROOT}/vendor/expected/include # template headers only
 # need PNG and JPEG to be the same as Core
 LIB_DIRS += -L${MBGL_ROOT}/build/linux-x86_64/Debug
 LIB_DIRS += -L${MBGL_ROOT}/mason_packages/linux-x86_64/libpng/1.6.34/lib
-LIB_DIRS += -L${MBGL_ROOT}/mason_packages/linux-x86_64/libjpeg-turbo/1.5.2/lib
+LIB_DIRS += -L${MBGL_ROOT}/mason_packages/linux-x86_64/libjpeg-turbo/1.5.0/lib
 LIB_DIRS += -L${MBGL_ROOT}/mason_packages/linux-x86_64/libuv/1.9.1/lib
 
 # MBGL static libs

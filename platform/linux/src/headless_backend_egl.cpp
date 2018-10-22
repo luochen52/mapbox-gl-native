@@ -69,7 +69,8 @@ public:
 
 class EGLBackendImpl : public HeadlessBackend::Impl {
 public:
-    EGLBackendImpl() {
+    EGLBackendImpl(OmniSciLogCallback omnisci_log_callback) {
+        _omnisci_log_callback = omnisci_log_callback;
         // EGL initializes the context client version to 1 by default. We want to
         // use OpenGL ES 2.0 which has the ability to create shader and program
         // objects and also to write vertex and fragment shaders in the OpenGL ES
@@ -80,6 +81,9 @@ public:
         };
 
         eglContext = eglCreateContext(eglDisplay->display, eglDisplay->config, EGL_NO_CONTEXT, attribs);
+        char msg[1000];
+        sprintf(msg, "DEBUG: MBGL: Create:        context %p, display %p", eglContext, eglDisplay->display);
+        _omnisci_log_callback(msg);
         if (eglContext == EGL_NO_CONTEXT) {
             mbgl::Log::Error(mbgl::Event::OpenGL, "eglCreateContext() returned error 0x%04x",
                              eglGetError());
@@ -110,6 +114,9 @@ public:
             }
             eglSurface = EGL_NO_SURFACE;
         }
+        char msg[1000];
+        sprintf(msg, "DEBUG: MBGL: Destroy:       context %p display %p", eglContext, eglDisplay->display);
+        _omnisci_log_callback(msg);
         if (!eglDestroyContext(eglDisplay->display, eglContext)) {
             Log::Error(Event::OpenGL, "Failed to destroy EGL context.");
         }
@@ -120,12 +127,18 @@ public:
     }
 
     void activateContext() final {
+        char msg[1000];
+        sprintf(msg, "DEBUG: MBGL: Make Active:   context %p, display %p, surface %p", eglContext, eglDisplay->display, eglSurface);
+        _omnisci_log_callback(msg);
         if (!eglMakeCurrent(eglDisplay->display, eglSurface, eglSurface, eglContext)) {
             throw std::runtime_error("Switching OpenGL context failed.\n");
         }
     }
 
     void deactivateContext() final {
+        char msg[1000];
+        sprintf(msg, "DEBUG: MBGL: Make Inactive: context %p, display %p", eglContext, eglDisplay->display);
+        _omnisci_log_callback(msg);
         if (!eglMakeCurrent(eglDisplay->display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT)) {
             throw std::runtime_error("Removing OpenGL context failed.\n");
         }
@@ -135,11 +148,12 @@ private:
     const std::shared_ptr<const EGLDisplayConfig> eglDisplay = EGLDisplayConfig::create();
     EGLContext eglContext = EGL_NO_CONTEXT;
     EGLSurface eglSurface = EGL_NO_SURFACE;
+    OmniSciLogCallback _omnisci_log_callback = nullptr;
 };
 
-void HeadlessBackend::createImpl() {
+void HeadlessBackend::createImpl(OmniSciLogCallback cb) {
     assert(!impl);
-    impl = std::make_unique<EGLBackendImpl>();
+    impl = std::make_unique<EGLBackendImpl>(cb);
 }
 
 } // namespace mbgl

@@ -39,7 +39,7 @@ private:
     GLubyte fakeBuffer = 0;
 };
 
-void HeadlessBackend::createImpl() {
+void HeadlessBackend::createImpl(OmniSciLogCallback) {
     assert(!impl);
     impl = std::make_unique<OSMesaBackendImpl>();
 }

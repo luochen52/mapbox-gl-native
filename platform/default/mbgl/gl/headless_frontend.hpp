@@ -9,6 +9,8 @@
 
 #include <memory>
 
+#include "omnisci_log_callback.hpp"
+
 namespace mbgl {
 
 class FileSource;
@@ -43,6 +45,8 @@ public:
     PremultipliedImage render(Map&);
 
     optional<TransformState> getTransformState() const;
+
+    void setOmniSciLogCallback(OmniSciLogCallback omnisci_log_callback) { backend.setOmniSciLogCallback(omnisci_log_callback); }
 
 private:
     Size size;

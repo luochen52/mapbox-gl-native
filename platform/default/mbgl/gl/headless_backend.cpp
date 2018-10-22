@@ -40,7 +40,7 @@ void HeadlessBackend::activate() {
     active = true;
 
     if (!impl) {
-        createImpl();
+        createImpl(_omnisci_log_callback);
     }
 
     assert(impl);

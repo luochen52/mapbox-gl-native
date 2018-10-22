@@ -13,6 +13,10 @@
 
 using namespace mbgl;
 
+void log_callback(const char* msg) {
+  printf("%s\n", msg);
+}
+
 int main(int argc, char *argv[]) {
 
     std::string style = util::default_styles::streets.url;
@@ -27,7 +31,7 @@ int main(int argc, char *argv[]) {
     const std::string output = "out.png";
     const std::string cache_file = "cache.sqlite";
     const std::string asset_root = ".";
-    const std::string token = getenv("MAPBOX_ACCESS_TOKEN");
+    const std::string token = "pk.eyJ1IjoibWFwZCIsImEiOiJjajZmOGYzNG0wZTZwMnltbDhoaG50YzFiIn0.IzTw2By-SmxIONNGignoxw";
     const bool debug = false;
 
     util::RunLoop loop; // not referenced in code below but one has to be constructed otherwise you get a static assert!
@@ -38,6 +42,7 @@ int main(int argc, char *argv[]) {
     ThreadPool threadPool(4);
 
     HeadlessFrontend frontend({ width, height }, pixelRatio, fileSource, threadPool);
+    frontend.setOmniSciLogCallback(log_callback);
 
     Map map(frontend, MapObserver::nullObserver(), frontend.getSize(), pixelRatio, fileSource, threadPool, MapMode::Static);
     map.getStyle().loadURL(style);

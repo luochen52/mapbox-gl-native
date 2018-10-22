@@ -120,7 +120,7 @@ private:
     CGLContextObj glContext = nullptr;
 };
 
-void HeadlessBackend::createImpl() {
+void HeadlessBackend::createImpl(OmniSciLogCallback) {
     assert(!impl);
     impl = std::make_unique<CGLBackendImpl>();
 }

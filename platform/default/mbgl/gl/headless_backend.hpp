@@ -5,6 +5,8 @@
 #include <memory>
 #include <functional>
 
+#include "omnisci_log_callback.hpp"
+
 namespace mbgl {
 
 class HeadlessBackend : public RendererBackend {
@@ -27,6 +29,8 @@ public:
         virtual void deactivateContext() {}
     };
 
+    void setOmniSciLogCallback(OmniSciLogCallback omnisci_log_callback) { _omnisci_log_callback = omnisci_log_callback; }
+
 private:
     // Implementation specific functions
     gl::ProcAddress getExtensionFunctionPointer(const char*) override;
@@ -34,7 +38,7 @@ private:
     void activate() override;
     void deactivate() override;
 
-    void createImpl();
+    void createImpl(OmniSciLogCallback);
 
 private:
     std::unique_ptr<Impl> impl;
@@ -45,6 +49,8 @@ private:
 
     class View;
     std::unique_ptr<View> view;
+
+    OmniSciLogCallback _omnisci_log_callback = nullptr;
 };
 
 } // namespace mbgl

@@ -7,6 +7,8 @@
 
 #include <cassert>
 
+#define OMNISCI_CONTEXT_DEBUGGING 0
+
 namespace mbgl {
 
 // This class provides a singleton that contains information about the configuration used for
@@ -81,9 +83,14 @@ public:
         };
 
         eglContext = eglCreateContext(eglDisplay->display, eglDisplay->config, EGL_NO_CONTEXT, attribs);
-        char msg[1000];
-        sprintf(msg, "DEBUG: MBGL: Create:        context %p, display %p", eglContext, eglDisplay->display);
-        _omnisci_log_callback(msg);
+
+        if (OMNISCI_CONTEXT_DEBUGGING) {
+            assert(_omnisci_log_callback);
+            char msg[1000];
+            sprintf(msg, "DEBUG: MBGL: Create:        context %p, display %p", eglContext, eglDisplay->display);
+            _omnisci_log_callback(msg);
+        }
+
         if (eglContext == EGL_NO_CONTEXT) {
             mbgl::Log::Error(mbgl::Event::OpenGL, "eglCreateContext() returned error 0x%04x",
                              eglGetError());
@@ -114,9 +121,14 @@ public:
             }
             eglSurface = EGL_NO_SURFACE;
         }
-        char msg[1000];
-        sprintf(msg, "DEBUG: MBGL: Destroy:       context %p display %p", eglContext, eglDisplay->display);
-        _omnisci_log_callback(msg);
+
+        if (OMNISCI_CONTEXT_DEBUGGING) {
+            assert(_omnisci_log_callback);
+            char msg[1000];
+            sprintf(msg, "DEBUG: MBGL: Destroy:       context %p display %p", eglContext, eglDisplay->display);
+            _omnisci_log_callback(msg);
+        }
+
         if (!eglDestroyContext(eglDisplay->display, eglContext)) {
             Log::Error(Event::OpenGL, "Failed to destroy EGL context.");
         }
@@ -127,18 +139,26 @@ public:
     }
 
     void activateContext() final {
-        char msg[1000];
-        sprintf(msg, "DEBUG: MBGL: Make Active:   context %p, display %p, surface %p", eglContext, eglDisplay->display, eglSurface);
-        _omnisci_log_callback(msg);
+        if (OMNISCI_CONTEXT_DEBUGGING) {
+            assert(_omnisci_log_callback);
+            char msg[1000];
+            sprintf(msg, "DEBUG: MBGL: Make Active:   context %p, display %p, surface %p", eglContext, eglDisplay->display, eglSurface);
+            _omnisci_log_callback(msg);
+        }
+
         if (!eglMakeCurrent(eglDisplay->display, eglSurface, eglSurface, eglContext)) {
             throw std::runtime_error("Switching OpenGL context failed.\n");
         }
     }
 
     void deactivateContext() final {
-        char msg[1000];
-        sprintf(msg, "DEBUG: MBGL: Make Inactive: context %p, display %p", eglContext, eglDisplay->display);
-        _omnisci_log_callback(msg);
+        if (OMNISCI_CONTEXT_DEBUGGING) {
+            assert(_omnisci_log_callback);
+            char msg[1000];
+            sprintf(msg, "DEBUG: MBGL: Make Inactive: context %p, display %p", eglContext, eglDisplay->display);
+            _omnisci_log_callback(msg);
+        }
+        
         if (!eglMakeCurrent(eglDisplay->display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT)) {
             throw std::runtime_error("Removing OpenGL context failed.\n");
         }
